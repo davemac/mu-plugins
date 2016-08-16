@@ -132,6 +132,53 @@ add_action('admin_menu', 'disable_default_dashboard_widgets');
     }
 add_action('admin_init','dmc_gforms_access');
 
+// Gravity Forms Custom Addresses (Australia)
+add_filter( 'gform_address_types', 'dmc_australian_address', 10, 2 );
+function dmc_australian_address( $address_types, $form_id ){
+    $address_types['australian'] = array(
+        'label' => 'Australia',
+        'country' => 'Australia',
+        'state_label' => 'State',
+        'zip_label' => 'Postcode',
+        'states' => array(
+            'Please select ...',
+            'Australian Capital Territory',
+            'New South Wales',
+            'Northern Territory',
+            'Queensland',
+            'South Australia',
+            'Tasmania',
+            'Victoria',
+            'Western Australia'
+            )
+    );
+    return $address_types;
+}
+add_filter( 'gform_address_street', 'dmc_change_address_street', 10, 2 );
+function dmc_change_address_street( $label, $form_id ) {
+    return 'Address line 1';
+}
+add_filter( 'gform_address_street2', 'dmc_change_address_street3', 10, 2 );
+function dmc_change_address_street3( $label, $form_id ) {
+    return 'Address line 2';
+}
+add_filter( 'gform_address_city', 'dmc_change_address_city', 10, 2 );
+function dmc_change_address_city( $label, $form_id ) {
+    return 'Town/suburb';
+}
+add_filter( 'gform_address_state', 'dmc_change_address_state', 10, 2 );
+function dmc_change_address_state( $label, $form_id ) {
+    return 'State';
+}
+add_filter( 'gform_address_zip', 'dmc_change_address_zip', 10, 2 );
+function dmc_change_address_zip( $label, $form_id ) {
+    return 'Postcode';
+}
+add_filter( 'gform_default_address_type', 'dmc_set_default_country',  10, 2 );
+function dmc_set_default_country( $default_address_type, $form_id ) {
+    return 'australian';
+}
+
 // Check if page is a child
 function is_tree( $pid ) {      
     global $post;               
@@ -179,6 +226,3 @@ function dmc_custom_login_logo() { ?>
     </style>
 <?php }
 add_action( 'login_enqueue_scripts', 'dmc_custom_login_logo' );
-
-
-
