@@ -124,6 +124,33 @@ function disable_default_dashboard_widgets() {
 }
 add_action('admin_menu', 'disable_default_dashboard_widgets');
 
+
+// remove certain admin menu items for Contributors
+function remove_menus(){
+    $user = wp_get_current_user();
+    if ( in_array( 'contributor', (array) $user->roles ) ) {
+        remove_menu_page( 'index.php' );                  //Dashboard
+        // remove_menu_page( 'jetpack' );                    //Jetpack* 
+        remove_menu_page( 'edit.php' );                   //Posts
+        // remove_menu_page( 'upload.php' );                 //Media
+        // remove_menu_page( 'edit.php?post_type=page' );    //Pages
+        remove_menu_page( 'edit-comments.php' );          //Comments
+        // remove_menu_page( 'themes.php' );                 //Appearance
+        // remove_menu_page( 'plugins.php' );                //Plugins
+        // remove_menu_page( 'users.php' );                  //Users
+        remove_menu_page( 'tools.php' );                  //Tools
+        // remove_menu_page( 'options-general.php' );        //Settings
+        remove_menu_page( 'edit.php?post_type=dmc_slider' );
+        remove_menu_page( 'edit.php?post_type=dmc-sponsors' );
+        remove_menu_page( 'edit.php?post_type=dmc-attractions' );
+        remove_menu_page( 'edit.php?post_type=dmc-presenters' );
+
+        remove_menu_page( 'acf-options-site-global-settings' );
+    }
+}
+add_action( 'admin_menu', 'remove_menus' );
+
+
 //Giving Editors Access to Gravity Forms and Appearance menu
     function dmc_gforms_access(){
         $role = get_role('editor');
@@ -131,6 +158,7 @@ add_action('admin_menu', 'disable_default_dashboard_widgets');
         $role->add_cap( 'edit_theme_options' );
     }
 add_action('admin_init','dmc_gforms_access');
+
 
 // Gravity Forms Custom Addresses (Australia)
 add_filter( 'gform_address_types', 'dmc_australian_address', 10, 2 );
@@ -178,6 +206,7 @@ add_filter( 'gform_default_address_type', 'dmc_set_default_country',  10, 2 );
 function dmc_set_default_country( $default_address_type, $form_id ) {
     return 'australian';
 }
+
 
 // Check if page is a child
 function is_tree( $pid ) {      
