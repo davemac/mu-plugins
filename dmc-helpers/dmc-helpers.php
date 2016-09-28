@@ -125,30 +125,33 @@ function disable_default_dashboard_widgets() {
 add_action('admin_menu', 'disable_default_dashboard_widgets');
 
 
-// remove certain admin menu items for Contributors
-function remove_menus(){
+// remove certain admin menu items for specific user roles
+function dmc_remove_menus(){
+    $roles = array( 'contributor', 'author' );
     $user = wp_get_current_user();
-    if ( in_array( 'contributor', (array) $user->roles ) ) {
-        remove_menu_page( 'index.php' );                  //Dashboard
-        // remove_menu_page( 'jetpack' );                    //Jetpack* 
-        remove_menu_page( 'edit.php' );                   //Posts
-        // remove_menu_page( 'upload.php' );                 //Media
-        // remove_menu_page( 'edit.php?post_type=page' );    //Pages
-        remove_menu_page( 'edit-comments.php' );          //Comments
-        // remove_menu_page( 'themes.php' );                 //Appearance
-        // remove_menu_page( 'plugins.php' );                //Plugins
-        // remove_menu_page( 'users.php' );                  //Users
-        remove_menu_page( 'tools.php' );                  //Tools
-        // remove_menu_page( 'options-general.php' );        //Settings
-        remove_menu_page( 'edit.php?post_type=dmc_slider' );
-        remove_menu_page( 'edit.php?post_type=dmc-sponsors' );
-        remove_menu_page( 'edit.php?post_type=dmc-attractions' );
-        remove_menu_page( 'edit.php?post_type=dmc-presenters' );
+    foreach ($roles as $role){
+        if ( in_array( $role, (array) $user->roles ) ) {
+            remove_menu_page( 'index.php' );                  //Dashboard
+            // remove_menu_page( 'jetpack' );                    //Jetpack* 
+            remove_menu_page( 'edit.php' );                   //Posts
+            // remove_menu_page( 'upload.php' );                 //Media
+            // remove_menu_page( 'edit.php?post_type=page' );    //Pages
+            remove_menu_page( 'edit-comments.php' );          //Comments
+            // remove_menu_page( 'themes.php' );                 //Appearance
+            // remove_menu_page( 'plugins.php' );                //Plugins
+            // remove_menu_page( 'users.php' );                  //Users
+            remove_menu_page( 'tools.php' );                  //Tools
+            // remove_menu_page( 'options-general.php' );        //Settings
+            remove_menu_page( 'edit.php?post_type=dmc_slider' );
+            remove_menu_page( 'edit.php?post_type=dmc-sponsors' );
+            remove_menu_page( 'edit.php?post_type=dmc-attractions' );
+            remove_menu_page( 'edit.php?post_type=dmc-presenters' );
 
-        remove_menu_page( 'acf-options-site-global-settings' );
+            remove_menu_page( 'acf-options-site-global-settings' );
+        }
     }
 }
-add_action( 'admin_menu', 'remove_menus' );
+add_action( 'admin_menu', 'dmc_remove_menus' );
 
 
 // Give editor role custom capabilities, access to certain plugins
