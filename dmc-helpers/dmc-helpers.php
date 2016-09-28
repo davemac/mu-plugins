@@ -151,7 +151,7 @@ function dmc_remove_menus(){
         }
     }
 }
-add_action( 'admin_menu', 'dmc_remove_menus' );
+add_action( 'admin_init', 'dmc_remove_menus' );
 
 
 // Give editor role custom capabilities, access to certain plugins
