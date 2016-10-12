@@ -161,7 +161,7 @@ add_action( 'admin_init', 'dmc_remove_menus' );
         $role->add_cap('gform_full_access');
         // allow editors to use Appearance menu
         $role->add_cap( 'edit_theme_options' );
-        // allow editors to manage co-authors plus plugin
+        // allow editors to manage co-authors plus plugin, create guest authors
         $role->add_cap( 'coauthors_guest_author_manage_cap' );
     }
 add_action('admin_init','dmc_modify_editor_role');
