@@ -229,13 +229,6 @@ function is_tree( $pid ) {
     return false; 
 }
 
-// check is post is a custom post type http://wordpress.stackexchange.com/questions/6731/if-is-custom-post-type
-function is_post_type($type){
-    global $wp_query;
-    if($type == get_post_type($wp_query->post->ID)) return true;
-    return false;
-}
-
 function dmc_custom_login_logo_url() {
     return get_bloginfo( 'url' );
 }
