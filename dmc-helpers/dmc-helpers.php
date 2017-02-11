@@ -216,19 +216,21 @@ function dmc_set_default_country( $default_address_type, $form_id ) {
 
 
 // Check if page is a child
-function is_tree( $pid ) {      
-    global $post;   
-    if ( !is_search() ) :             
-        if ( is_page($pid) )
-            return true;            
-        $anc = get_post_ancestors( $post->ID );
-        foreach ( $anc as $ancestor ) {
-            if( is_page() && $ancestor == $pid ) {
-                return true;
+function is_tree( $pid ) {   
+    if ( !is_404() ) {   
+        global $post;   
+        if ( !is_search() ) :             
+            if ( is_page($pid) )
+                return true;            
+            $anc = get_post_ancestors( $post->ID );
+            foreach ( $anc as $ancestor ) {
+                if( is_page() && $ancestor == $pid ) {
+                    return true;
+                }
             }
-        }
-        return false; 
-    endif;
+            return false; 
+        endif;
+    }
 }
 
 function dmc_custom_login_logo_url() {
