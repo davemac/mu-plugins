@@ -59,7 +59,7 @@ function register_dmc_slider() {
     register_post_type( 'dmc_slider' , $args );
 }
 
-function SliderContent(){
+function display_slider_content() {
 
     $args = array( 'post_type' => 'dmc_slider', 'order' => 'ASC', 'posts_per_page' => 6 );
     $dmcslider = new WP_Query( $args );
