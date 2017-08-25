@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
 Plugin Name: DMC Web Helpers
 Plugin URI: http://www.dmcweb.com.au
@@ -12,154 +12,157 @@ Copyright 2013  David McDonald (email : info@davidmcdonald.org, twitter : @davem
 
 // disable default dashboard widgets
 function disable_default_dashboard_widgets() {
-    // remove_meta_box('dashboard_right_now', 'dashboard', 'core');
-    //QuickPress
-    remove_meta_box('dashboard_quick_press', 'dashboard', 'core');
-    //Wordpress Development Blog Feed
-    remove_meta_box('dashboard_primary', 'dashboard', 'core');
-    //Other Wordpress News Feed
-    remove_meta_box('dashboard_secondary', 'dashboard', 'core');
-    //Plugins - Popular, New and Recently updated Wordpress Plugins
-    remove_meta_box('dashboard_plugins', 'dashboard', 'core');
-    // Recent Comments
-    remove_meta_box('dashboard_recent_comments', 'dashboard', 'core');
-    // remove_meta_box('dashboard_incoming_links', 'dashboard', 'core');
-    // remove_meta_box('dashboard_recent_drafts', 'dashboard', 'core'); 
+	// remove_meta_box('dashboard_right_now', 'dashboard', 'core');
+	//QuickPress
+	remove_meta_box( 'dashboard_quick_press', 'dashboard', 'core' );
+	//Wordpress Development Blog Feed
+	remove_meta_box( 'dashboard_primary', 'dashboard', 'core' );
+	//Other WordPress News Feed
+	remove_meta_box( 'dashboard_secondary', 'dashboard', 'core' );
+	//Plugins - Popular, New and Recently updated WordPress Plugins
+	remove_meta_box( 'dashboard_plugins', 'dashboard', 'core' );
+	// Recent Comments
+	remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'core' );
+	// remove_meta_box('dashboard_incoming_links', 'dashboard', 'core');
+	// remove_meta_box('dashboard_recent_drafts', 'dashboard', 'core');
 }
-add_action('admin_menu', 'disable_default_dashboard_widgets');
+add_action( 'admin_menu', 'disable_default_dashboard_widgets' );
 
 
 // remove certain admin menu items for specific user roles
-function dmc_remove_menus(){
-    $roles = array( 'contributor', 'author' );
-    $user = wp_get_current_user();
-    foreach ($roles as $role){
-        if ( in_array( $role, (array) $user->roles ) ) {
-            remove_menu_page( 'index.php' );                  //Dashboard
-            // remove_menu_page( 'jetpack' );                    //Jetpack* 
-            remove_menu_page( 'edit.php' );                   //Posts
-            // remove_menu_page( 'upload.php' );                 //Media
-            // remove_menu_page( 'edit.php?post_type=page' );    //Pages
-            remove_menu_page( 'edit-comments.php' );          //Comments
-            // remove_menu_page( 'themes.php' );                 //Appearance
-            // remove_menu_page( 'plugins.php' );                //Plugins
-            // remove_menu_page( 'users.php' );                  //Users
-            remove_menu_page( 'tools.php' );                  //Tools
-            // remove_menu_page( 'options-general.php' );        //Settings
-            remove_menu_page( 'edit.php?post_type=dmc_slider' );
-            remove_menu_page( 'edit.php?post_type=dmc-sponsors' );
-            remove_menu_page( 'edit.php?post_type=dmc-attractions' );
-            remove_menu_page( 'edit.php?post_type=dmc-presenters' );
+function dmc_remove_menus() {
+	$roles = array( 'contributor', 'author' );
+	$user = wp_get_current_user();
+	foreach ( $roles as $role ) {
+		if ( in_array( $role, (array) $user->roles, true ) ) {
+			remove_menu_page( 'index.php' );                  //Dashboard
+			// remove_menu_page( 'jetpack' );                    //Jetpack*
+			remove_menu_page( 'edit.php' );                   //Posts
+			// remove_menu_page( 'upload.php' );                 //Media
+			// remove_menu_page( 'edit.php?post_type=page' );    //Pages
+			remove_menu_page( 'edit-comments.php' );          //Comments
+			// remove_menu_page( 'themes.php' );                 //Appearance
+			// remove_menu_page( 'plugins.php' );                //Plugins
+			// remove_menu_page( 'users.php' );                  //Users
+			remove_menu_page( 'tools.php' );                  //Tools
+			// remove_menu_page( 'options-general.php' );        //Settings
+			remove_menu_page( 'edit.php?post_type=dmc_slider' );
+			remove_menu_page( 'edit.php?post_type=dmc-sponsors' );
+			remove_menu_page( 'edit.php?post_type=dmc-attractions' );
+			remove_menu_page( 'edit.php?post_type=dmc-presenters' );
 
-            remove_menu_page( 'acf-options-site-global-settings' );
-        }
-    }
+			remove_menu_page( 'acf-options-site-global-settings' );
+		}
+	}
 }
 add_action( 'admin_init', 'dmc_remove_menus' );
 
 
 // Give editor role custom capabilities, access to certain plugins
-    function dmc_modify_editor_role(){
-        $role = get_role('editor');
-        // allow editors to manage gravity forms
-        $role->add_cap('gform_full_access');
-        // allow editors to use Appearance menu
-        $role->add_cap( 'edit_theme_options' );
-        // allow editors to manage co-authors plus plugin, create guest authors
-        $role->add_cap( 'coauthors_guest_author_manage_cap' );
-    }
-add_action('admin_init','dmc_modify_editor_role');
+function dmc_modify_editor_role() {
+	$role = get_role( 'editor' );
+	// allow editors to manage gravity forms
+	$role->add_cap( 'gform_full_access' );
+	// allow editors to use Appearance menu
+	$role->add_cap( 'edit_theme_options' );
+	// allow editors to manage co-authors plus plugin, create guest authors
+	$role->add_cap( 'coauthors_guest_author_manage_cap' );
+}
+add_action( 'admin_init','dmc_modify_editor_role' );
 
 
 // Gravity Forms Custom Addresses (Australia)
 add_filter( 'gform_address_types', 'dmc_australian_address', 10, 2 );
-function dmc_australian_address( $address_types, $form_id ){
-    $address_types['australian'] = array(
-        'label' => 'Australia',
-        'country' => 'Australia',
-        'state_label' => 'State',
-        'zip_label' => 'Postcode',
-        'states' => array(
-            'Please select ...',
-            'Australian Capital Territory',
-            'New South Wales',
-            'Northern Territory',
-            'Queensland',
-            'South Australia',
-            'Tasmania',
-            'Victoria',
-            'Western Australia'
-            )
-    );
-    return $address_types;
+function dmc_australian_address( $address_types, $form_id ) {
+	$address_types['australian'] = array(
+		'label' => 'Australia',
+		'country' => 'Australia',
+		'state_label' => 'State',
+		'zip_label' => 'Postcode',
+		'states' => array(
+			'Please select ...',
+			'Australian Capital Territory',
+			'New South Wales',
+			'Northern Territory',
+			'Queensland',
+			'South Australia',
+			'Tasmania',
+			'Victoria',
+			'Western Australia',
+		),
+	);
+	return $address_types;
 }
 add_filter( 'gform_address_street', 'dmc_change_address_street', 10, 2 );
 function dmc_change_address_street( $label, $form_id ) {
-    return 'Address line 1';
+	return 'Address line 1';
 }
 add_filter( 'gform_address_street2', 'dmc_change_address_street3', 10, 2 );
 function dmc_change_address_street3( $label, $form_id ) {
-    return 'Address line 2';
+	return 'Address line 2';
 }
 add_filter( 'gform_address_city', 'dmc_change_address_city', 10, 2 );
 function dmc_change_address_city( $label, $form_id ) {
-    return 'Town/suburb';
+	return 'Town/suburb';
 }
 add_filter( 'gform_address_state', 'dmc_change_address_state', 10, 2 );
 function dmc_change_address_state( $label, $form_id ) {
-    return 'State';
+	return 'State';
 }
 add_filter( 'gform_address_zip', 'dmc_change_address_zip', 10, 2 );
 function dmc_change_address_zip( $label, $form_id ) {
-    return 'Postcode';
+	return 'Postcode';
 }
 add_filter( 'gform_default_address_type', 'dmc_set_default_country',  10, 2 );
 function dmc_set_default_country( $default_address_type, $form_id ) {
-    return 'australian';
+	return 'australian';
 }
 
 
 // Check if page is a child
-function is_tree( $pid ) {   
-    if ( !is_404() ) {   
-        global $post;   
-        if ( !is_search() ) :             
-            if ( is_page($pid) )
-                return true;            
-            $anc = get_post_ancestors( $post->ID );
-            foreach ( $anc as $ancestor ) {
-                if( is_page() && $ancestor == $pid ) {
-                    return true;
-                }
-            }
-            return false; 
-        endif;
-    }
+function is_tree( $pid ) {
+	if ( ! is_404() ) {
+		global $post;
+		if ( ! is_search() ) :
+			if ( is_page( $pid ) ) {
+				return true;
+			}
+			$anc = get_post_ancestors( $post->ID );
+			foreach ( $anc as $ancestor ) {
+				if ( is_page() && $ancestor === $pid ) {
+					return true;
+				}
+			}
+			return false;
+		endif;
+	}
 }
 
 function dmc_custom_login_logo_url() {
-    return get_bloginfo( 'url' );
+	return get_bloginfo( 'url' );
 }
 add_filter( 'login_headerurl', 'dmc_custom_login_logo_url' );
 
 function dmc_custom_login_logo_url_title() {
-    return get_bloginfo( 'name' );
+	return get_bloginfo( 'name' );
 }
 add_filter( 'login_headertitle', 'dmc_custom_login_logo_url_title' );
 
-function dmc_custom_login_logo() { ?>
-    <style type="text/css">
-    	body.login div#login{
-    		padding-top: 70px;
-    	}
-        body.login div#login h1 a {
-        	width: 320px;
-        	height: 129px;
-        	margin-left: 4px;
-            background-image: url(<?php echo get_bloginfo( 'template_directory' ) ?>/img/logo-med.png);
-            background-size: 320px 129px;
-            padding-bottom: 30px;
-        }
-    </style>
-<?php }
+function dmc_custom_login_logo() {
+	?>
+	<style type="text/css">
+		body.login div#login{
+			padding-top: 70px;
+		}
+		body.login div#login h1 a {
+			width: 320px;
+			height: 129px;
+			margin-left: 4px;
+			background-image: url(<?php echo get_bloginfo( 'template_directory' ); ?>/img/logo-med.png);
+			background-size: 320px 129px;
+			padding-bottom: 30px;
+		}
+	</style>
+<?php
+}
 add_action( 'login_enqueue_scripts', 'dmc_custom_login_logo' );
