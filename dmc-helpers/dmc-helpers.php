@@ -68,7 +68,7 @@ function dmc_modify_editor_role() {
 	// allow editors to manage co-authors plus plugin, create guest authors
 	$role->add_cap( 'coauthors_guest_author_manage_cap' );
 }
-add_action( 'admin_init','dmc_modify_editor_role' );
+add_action( 'admin_init', 'dmc_modify_editor_role' );
 
 
 // Give editor role access to the Redirection plugin
@@ -120,7 +120,7 @@ add_filter( 'gform_address_zip', 'dmc_change_address_zip', 10, 2 );
 function dmc_change_address_zip( $label, $form_id ) {
 	return 'Postcode';
 }
-add_filter( 'gform_default_address_type', 'dmc_set_default_country',  10, 2 );
+add_filter( 'gform_default_address_type', 'dmc_set_default_country', 10, 2 );
 function dmc_set_default_country( $default_address_type, $form_id ) {
 	return 'australian';
 }
@@ -165,7 +165,7 @@ function dmc_custom_login_logo() {
 			width: 320px;
 			height: 129px;
 			margin-left: 4px;
-			background-image: url(<?php echo get_bloginfo( 'template_directory' ); ?>/img/logo-med.png);
+			background-image: url('<?php echo esc_url( get_bloginfo( 'template_directory' ) ); ?>/img/logo-med.png');
 			background-size: 320px 129px;
 			padding-bottom: 30px;
 		}
