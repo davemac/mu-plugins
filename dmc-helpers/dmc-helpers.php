@@ -7,32 +7,32 @@ Version: 1.0
 Author: David McDonald
 Author URI: http://www.davidmcodnald.org
 License: GPLv2
-Copyright 2013  David McDonald (email : info@davidmcdonald.org, twitter : @davemac)
+Copyright 2018  David McDonald (email : info@davidmcdonald.org, twitter : @davemac)
 */
 
+
 // disable default dashboard widgets
-function disable_default_dashboard_widgets() {
-	// remove_meta_box('dashboard_right_now', 'dashboard', 'core');
+function dmc_disable_default_dashboard_widgets() {
 	//QuickPress
-	remove_meta_box( 'dashboard_quick_press', 'dashboard', 'core' );
-	//Wordpress Development Blog Feed
-	remove_meta_box( 'dashboard_primary', 'dashboard', 'core' );
-	//Other WordPress News Feed
-	remove_meta_box( 'dashboard_secondary', 'dashboard', 'core' );
+	remove_meta_box( 'dashboard_quick_press', 'dashboard', 'side' );
+	// WordPress Development Blog Feed
+	remove_meta_box( 'dashboard_primary', 'dashboard', 'side' );
+	// Other WordPress News Feed
+	remove_meta_box( 'dashboard_secondary', 'dashboard', 'side' );
 	//Plugins - Popular, New and Recently updated WordPress Plugins
-	remove_meta_box( 'dashboard_plugins', 'dashboard', 'core' );
+	remove_meta_box( 'dashboard_plugins', 'dashboard', 'normal' );
 	// Recent Comments
 	remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'core' );
-	// remove_meta_box('dashboard_incoming_links', 'dashboard', 'core');
-	// remove_meta_box('dashboard_recent_drafts', 'dashboard', 'core');
+	// Yoast SEO
+	remove_meta_box( 'wpseo-dashboard-overview', 'dashboard', 'side' );
 }
-add_action( 'admin_menu', 'disable_default_dashboard_widgets' );
+add_action( 'wp_dashboard_setup', 'dmc_disable_default_dashboard_widgets' );
 
 
 // remove certain admin menu items for specific user roles
 function dmc_remove_menus() {
 	$roles = array( 'contributor', 'author' );
-	$user = wp_get_current_user();
+	$user  = wp_get_current_user();
 	foreach ( $roles as $role ) {
 		if ( in_array( $role, (array) $user->roles, true ) ) {
 			remove_menu_page( 'index.php' );                  //Dashboard
@@ -82,11 +82,11 @@ function dmc_redirection_editor_access() {
 add_filter( 'gform_address_types', 'dmc_australian_address', 10, 2 );
 function dmc_australian_address( $address_types, $form_id ) {
 	$address_types['australian'] = array(
-		'label' => 'Australia',
-		'country' => 'Australia',
+		'label'       => 'Australia',
+		'country'     => 'Australia',
 		'state_label' => 'State',
-		'zip_label' => 'Postcode',
-		'states' => array(
+		'zip_label'   => 'Postcode',
+		'states'      => array(
 			'Please select ...',
 			'Australian Capital Territory',
 			'New South Wales',
