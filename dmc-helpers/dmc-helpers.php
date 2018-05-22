@@ -7,26 +7,26 @@ Version: 1.0
 Author: David McDonald
 Author URI: http://www.davidmcodnald.org
 License: GPLv2
-Copyright 2013  David McDonald (email : info@davidmcdonald.org, twitter : @davemac)
+Copyright 2018  David McDonald (email : info@davidmcdonald.org, twitter : @davemac)
 */
 
+
 // disable default dashboard widgets
-function disable_default_dashboard_widgets() {
-	// remove_meta_box('dashboard_right_now', 'dashboard', 'core');
+function dmc_disable_default_dashboard_widgets() {
 	//QuickPress
-	remove_meta_box( 'dashboard_quick_press', 'dashboard', 'core' );
-	//Wordpress Development Blog Feed
-	remove_meta_box( 'dashboard_primary', 'dashboard', 'core' );
-	//Other WordPress News Feed
-	remove_meta_box( 'dashboard_secondary', 'dashboard', 'core' );
+	remove_meta_box( 'dashboard_quick_press', 'dashboard', 'side' );
+	// WordPress Development Blog Feed
+	remove_meta_box( 'dashboard_primary', 'dashboard', 'side' );
+	// Other WordPress News Feed
+	remove_meta_box( 'dashboard_secondary', 'dashboard', 'side' );
 	//Plugins - Popular, New and Recently updated WordPress Plugins
-	remove_meta_box( 'dashboard_plugins', 'dashboard', 'core' );
+	remove_meta_box( 'dashboard_plugins', 'dashboard', 'normal' );
 	// Recent Comments
 	remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'core' );
-	// remove_meta_box('dashboard_incoming_links', 'dashboard', 'core');
-	// remove_meta_box('dashboard_recent_drafts', 'dashboard', 'core');
+	// Yoast SEO
+	remove_meta_box( 'wpseo-dashboard-overview', 'dashboard', 'side' );
 }
-add_action( 'admin_menu', 'disable_default_dashboard_widgets' );
+add_action( 'wp_dashboard_setup', 'dmc_disable_default_dashboard_widgets' );
 
 
 // remove certain admin menu items for specific user roles
@@ -46,10 +46,6 @@ function dmc_remove_menus() {
 			// remove_menu_page( 'users.php' );                  //Users
 			remove_menu_page( 'tools.php' );                  //Tools
 			// remove_menu_page( 'options-general.php' );        //Settings
-			remove_menu_page( 'edit.php?post_type=dmc_slider' );
-			remove_menu_page( 'edit.php?post_type=dmc-sponsors' );
-			remove_menu_page( 'edit.php?post_type=dmc-attractions' );
-			remove_menu_page( 'edit.php?post_type=dmc-presenters' );
 
 			remove_menu_page( 'acf-options-site-global-settings' );
 		}
@@ -79,6 +75,12 @@ function dmc_modify_editor_role() {
 }
 add_action( 'admin_init', 'dmc_modify_editor_role' );
 
+
+// Give editor role access to the Redirection plugin
+add_filter( 'redirection_role', 'dmc_redirection_editor_access' );
+function dmc_redirection_editor_access() {
+	return 'edit_pages';
+}
 
 // Give editor role access to the Redirection plugin
 add_filter( 'redirection_role', 'dmc_redirection_editor_access' );
@@ -173,7 +175,7 @@ function dmc_custom_login_logo() {
 			width: 320px;
 			height: 129px;
 			margin-left: 4px;
-			background-image: url(<?php echo get_bloginfo( 'template_directory' ); ?>/img/logo-med.svg);
+			background-image: url('<?php echo esc_url( get_bloginfo( 'template_directory' ) ); ?>/img/logo-med.png');
 			background-size: 320px 129px;
 			padding-bottom: 30px;
 		}
