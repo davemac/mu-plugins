@@ -32,7 +32,7 @@ add_action( 'admin_menu', 'disable_default_dashboard_widgets' );
 // remove certain admin menu items for specific user roles
 function dmc_remove_menus() {
 	$roles = array( 'contributor', 'author' );
-	$user = wp_get_current_user();
+	$user  = wp_get_current_user();
 	foreach ( $roles as $role ) {
 		if ( in_array( $role, (array) $user->roles, true ) ) {
 			remove_menu_page( 'index.php' );                  //Dashboard
@@ -58,28 +58,43 @@ function dmc_remove_menus() {
 add_action( 'admin_init', 'dmc_remove_menus' );
 
 
-// Give editor role custom capabilities, access to certain plugins
+// allow editors to manage gravity forms
+// allow editors to use Appearance menu
+// allow editors to manage co-authors plus plugin, create guest authors
+// allow editors to manage Privacy sub-menu under Settings
 function dmc_modify_editor_role() {
 	$role = get_role( 'editor' );
-	// allow editors to manage gravity forms
-	$role->add_cap( 'gform_full_access' );
-	// allow editors to use Appearance menu
-	$role->add_cap( 'edit_theme_options' );
-	// allow editors to manage co-authors plus plugin, create guest authors
-	$role->add_cap( 'coauthors_guest_author_manage_cap' );
-}
-add_action( 'admin_init','dmc_modify_editor_role' );
 
+	$capabilities = array(
+		'gform_full_access',
+		'edit_theme_options',
+		'coauthors_guest_author_manage_cap',
+		// 'manage_options',
+		'manage_privacy_options',
+	);
+
+	foreach ( $capabilities as $cap ) {
+		$role->add_cap( $cap );
+	}
+}
+add_action( 'admin_init', 'dmc_modify_editor_role' );
+
+
+// Give editor role access to the Redirection plugin
+add_filter( 'redirection_role', 'dmc_redirection_editor_access' );
+function dmc_redirection_editor_access() {
+	return 'edit_pages';
+}
 
 // Gravity Forms Custom Addresses (Australia)
 add_filter( 'gform_address_types', 'dmc_australian_address', 10, 2 );
 function dmc_australian_address( $address_types, $form_id ) {
 	$address_types['australian'] = array(
-		'label' => 'Australia',
-		'country' => 'Australia',
+		'label'       => 'Australia',
+		'country'     => 'Australia',
 		'state_label' => 'State',
-		'zip_label' => 'Postcode',
-		'states' => array(
+		'zip_label'   => 'Postcode',
+		'states'      => array(
 			'Please select ...',
 			'Australian Capital Territory',
 			'New South Wales',
@@ -113,7 +128,7 @@ add_filter( 'gform_address_zip', 'dmc_change_address_zip', 10, 2 );
 function dmc_change_address_zip( $label, $form_id ) {
 	return 'Postcode';
 }
-add_filter( 'gform_default_address_type', 'dmc_set_default_country',  10, 2 );
+add_filter( 'gform_default_address_type', 'dmc_set_default_country', 10, 2 );
 function dmc_set_default_country( $default_address_type, $form_id ) {
 	return 'australian';
 }
@@ -158,7 +173,7 @@ function dmc_custom_login_logo() {
 			width: 320px;
 			height: 129px;
 			margin-left: 4px;
-			background-image: url(<?php echo get_bloginfo( 'template_directory' ); ?>/img/logo-med.png);
+			background-image: url(<?php echo get_bloginfo( 'template_directory' ); ?>/img/logo-med.svg);
 			background-size: 320px 129px;
 			padding-bottom: 30px;
 		}
