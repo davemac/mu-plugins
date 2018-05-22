@@ -17,7 +17,7 @@
  */
 function isa_editor_manage_users() {
 
-	if ( get_option( 'isa_add_cap_editor_once' ) !== 'done' ) {
+	// if ( get_option( 'isa_add_cap_editor_reloaded' ) !== 'done' ) {
 
 		// let editor manage users
 		$edit_editor = get_role( 'editor' );
@@ -37,8 +37,8 @@ function isa_editor_manage_users() {
 			$edit_editor->add_cap( $cap );
 		}
 
-		update_option( 'isa_add_cap_editor_once', 'done' );
-	}
+		// update_option( 'isa_add_cap_editor_reloaded', 'done' );
+	// }
 
 }
 add_action( 'init', 'isa_editor_manage_users' );

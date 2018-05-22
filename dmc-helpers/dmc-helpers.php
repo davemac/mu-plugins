@@ -65,7 +65,7 @@ function dmc_modify_editor_role() {
 		'gform_full_access',
 		'edit_theme_options',
 		'coauthors_guest_author_manage_cap',
-		// 'manage_options',
+		'manage_options',
 		'manage_privacy_options',
 	);
 
@@ -75,12 +75,6 @@ function dmc_modify_editor_role() {
 }
 add_action( 'admin_init', 'dmc_modify_editor_role' );
 
-
-// Give editor role access to the Redirection plugin
-add_filter( 'redirection_role', 'dmc_redirection_editor_access' );
-function dmc_redirection_editor_access() {
-	return 'edit_pages';
-}
 
 // Give editor role access to the Redirection plugin
 add_filter( 'redirection_role', 'dmc_redirection_editor_access' );
