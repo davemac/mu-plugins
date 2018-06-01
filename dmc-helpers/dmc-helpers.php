@@ -70,7 +70,7 @@ add_action( 'admin_init', 'dmc_modify_editor_role' );
 // Give editor role access to the Redirection plugin
 add_filter( 'redirection_role', 'dmc_redirection_editor_access' );
 function dmc_redirection_editor_access() {
-	return 'edit_pages';
+	return 'editor';
 }
 
 
