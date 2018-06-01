@@ -54,15 +54,24 @@ function dmc_remove_menus() {
 add_action( 'admin_init', 'dmc_remove_menus' );
 
 
-// Give editor role custom capabilities, access to certain plugins
+// allow editors to manage gravity forms
+// allow editors to use Appearance menu
+// allow editors to manage co-authors plus plugin, create guest authors
+// allow editors to manage Privacy sub-menu under Settings
 function dmc_modify_editor_role() {
 	$role = get_role( 'editor' );
-	// allow editors to manage gravity forms
-	$role->add_cap( 'gform_full_access' );
-	// allow editors to use Appearance menu
-	$role->add_cap( 'edit_theme_options' );
-	// allow editors to manage co-authors plus plugin, create guest authors
-	$role->add_cap( 'coauthors_guest_author_manage_cap' );
+
+	$capabilities = array(
+		'gform_full_access',
+		'edit_theme_options',
+		'coauthors_guest_author_manage_cap',
+		'manage_options',
+		'manage_privacy_options',
+	);
+
+	foreach ( $capabilities as $cap ) {
+		$role->add_cap( $cap );
+	}
 }
 add_action( 'admin_init', 'dmc_modify_editor_role' );
 
@@ -72,7 +81,6 @@ add_filter( 'redirection_role', 'dmc_redirection_editor_access' );
 function dmc_redirection_editor_access() {
 	return 'editor';
 }
-
 
 // Gravity Forms Custom Addresses (Australia)
 add_filter( 'gform_address_types', 'dmc_australian_address', 10, 2 );
