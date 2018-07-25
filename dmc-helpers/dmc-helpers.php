@@ -49,7 +49,7 @@ function dmc_remove_menus() {
 			remove_menu_page( 'tools.php' );                  //Tools
 			// remove_menu_page( 'options-general.php' );        //Settings
 
-			remove_menu_page( 'acf-options-site-global-settings' );
+			remove_menu_page( 'site-global-settings' );
 		}
 	}
 }
