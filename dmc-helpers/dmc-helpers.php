@@ -25,6 +25,8 @@ function dmc_disable_default_dashboard_widgets() {
 	remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'core' );
 	// Yoast SEO
 	remove_meta_box( 'wpseo-dashboard-overview', 'dashboard', 'side' );
+	// Events Calendar
+	remove_meta_box( 'tribe_dashboard_widget', 'dashboard', 'normal' );
 }
 add_action( 'wp_dashboard_setup', 'dmc_disable_default_dashboard_widgets' );
 
@@ -174,6 +176,6 @@ function dmc_custom_login_logo() {
 			padding-bottom: 30px;
 		}
 	</style>
-<?php
+	<?php
 }
 add_action( 'login_enqueue_scripts', 'dmc_custom_login_logo' );
