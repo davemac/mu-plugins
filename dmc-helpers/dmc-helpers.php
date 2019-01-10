@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: DMC Web Helpers
-Plugin URI: https://github.com/davemac/mu-plugins
-Description: Common helper functions used on most projects
+Plugin URI: http://www.dmcweb.com.au
+Description: Common helper functions used on most projects using customised Reverie theme
 Version: 1.0
 Author: David McDonald
-Author URI: https://dmcweb.com.au
+Author URI: http://www.davidmcodnald.org
 License: GPLv2
 Copyright 2018  David McDonald (email : info@davidmcdonald.org, twitter : @davemac)
 */
@@ -25,6 +25,8 @@ function dmc_disable_default_dashboard_widgets() {
 	remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'core' );
 	// Yoast SEO
 	remove_meta_box( 'wpseo-dashboard-overview', 'dashboard', 'side' );
+	// Events Calendar
+	remove_meta_box( 'tribe_dashboard_widget', 'dashboard', 'normal' );
 }
 add_action( 'wp_dashboard_setup', 'dmc_disable_default_dashboard_widgets' );
 
@@ -75,15 +77,6 @@ function dmc_modify_editor_role() {
 }
 add_action( 'admin_init', 'dmc_modify_editor_role' );
 
-<<<<<<< HEAD
-
-// Give editor role access to the Redirection plugin
-add_filter( 'redirection_role', 'dmc_redirection_editor_access' );
-function dmc_redirection_editor_access() {
-	return 'edit_pages';
-}
-=======
->>>>>>> 69794f4fc555cf5efdee1dec4916a7fb0e00a8bf
 
 // Give editor role access to the Redirection plugin
 add_filter( 'redirection_role', 'dmc_redirection_editor_access' );
@@ -169,12 +162,7 @@ function dmc_custom_login_logo_url_title() {
 add_filter( 'login_headertitle', 'dmc_custom_login_logo_url_title' );
 
 function dmc_custom_login_logo() {
-
-	if ( ! is_main_site() ) :
-		$dmc_logo_url = get_bloginfo( 'template_directory' ) . '/img/logo-med-trustee.png';
-	endif;
 	?>
-
 	<style type="text/css">
 		body.login div#login{
 			padding-top: 70px;
@@ -183,11 +171,7 @@ function dmc_custom_login_logo() {
 			width: 320px;
 			height: 129px;
 			margin-left: 4px;
-<<<<<<< HEAD
-			background-image: url('<?php echo esc_url( $dmc_logo_url ); ?>');
-=======
 			background-image: url('<?php echo esc_url( get_bloginfo( 'template_directory' ) ); ?>/img/logo-med.png');
->>>>>>> 69794f4fc555cf5efdee1dec4916a7fb0e00a8bf
 			background-size: 320px 129px;
 			padding-bottom: 30px;
 		}
