@@ -25,11 +25,6 @@ function dmc_disable_default_dashboard_widgets() {
 	remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'core' );
 	// Yoast SEO
 	remove_meta_box( 'wpseo-dashboard-overview', 'dashboard', 'side' );
-<<<<<<< HEAD
-=======
-	// Events Calendar
-	remove_meta_box( 'tribe_dashboard_widget', 'dashboard', 'normal' );
->>>>>>> 69794f4fc555cf5efdee1dec4916a7fb0e00a8bf
 }
 add_action( 'wp_dashboard_setup', 'dmc_disable_default_dashboard_widgets' );
 
