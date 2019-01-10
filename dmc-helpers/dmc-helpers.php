@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: DMC Web Helpers
-Plugin URI: http://www.dmcweb.com.au
-Description: Common helper functions used on most projects using customised Reverie theme
+Plugin URI: https://github.com/davemac/mu-plugins
+Description: Common helper functions used on most projects
 Version: 1.0
 Author: David McDonald
-Author URI: http://www.davidmcodnald.org
+Author URI: https://dmcweb.com.au
 License: GPLv2
 Copyright 2018  David McDonald (email : info@davidmcdonald.org, twitter : @davemac)
 */
