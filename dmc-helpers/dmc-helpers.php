@@ -79,10 +79,12 @@ add_action( 'admin_init', 'dmc_modify_editor_role' );
 
 
 // Give editor role access to the Redirection plugin
-add_filter( 'redirection_role', 'dmc_redirection_editor_access' );
-function dmc_redirection_editor_access() {
-	return 'editor';
-}
+add_filter(
+	'redirection_role',
+	function( $role ) {
+		return 'edit_posts';
+	}
+);
 
 // Gravity Forms Custom Addresses (Australia)
 add_filter( 'gform_address_types', 'dmc_australian_address', 10, 2 );
