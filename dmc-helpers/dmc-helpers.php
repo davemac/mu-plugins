@@ -68,7 +68,7 @@ add_action( 'admin_init', 'dmc_remove_menus' );
 // allow editors to manage co-authors plus plugin, create guest authors
 // allow editors to manage Privacy sub-menu under Settings
 function dmc_modify_editor_role() {
-	$role = get_role( 'editor' );
+	$role = get_role(  'editor', 'shop_manager' );
 
 	$capabilities = array(
 		'gform_full_access',
