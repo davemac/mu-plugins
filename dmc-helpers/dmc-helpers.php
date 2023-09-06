@@ -31,36 +31,40 @@ function dmc_disable_default_dashboard_widgets() {
 add_action( 'wp_dashboard_setup', 'dmc_disable_default_dashboard_widgets' );
 
 
-// remove certain admin menu items for specific user roles
-function dmc_remove_menus() {
+/**
+ * Removes specified admin menu items based on user roles.
+ *
+ * @return void
+ */
+function dmc_remove_admin_menu_items() {
 
-	// remove comments altogether
+	// Ensure the global $current_user is available
+	global $current_user;
+	wp_get_current_user();
+
+	if ( ! $current_user->roles || empty( $current_user->roles ) ) {
+		return;
+	}
+
+	// Remove comments altogether
 	remove_menu_page( 'edit-comments.php' );
 
 	$roles = array( 'contributor', 'author' );
-	$user  = wp_get_current_user();
 
-	foreach ( $roles as $role ) :
+	foreach ( $roles as $role ) {
+		if ( in_array( $role, $current_user->roles, true ) ) {
 
-		if ( in_array( $role, (array) $user->roles, true ) ) :
-
-			remove_menu_page( 'index.php' );                  //Dashboard
-			// remove_menu_page( 'jetpack' );                    //Jetpack*
-			remove_menu_page( 'edit.php' );                   //Posts
-			// remove_menu_page( 'upload.php' );                 //Media
-			// remove_menu_page( 'edit.php?post_type=page' );    //Pages
-			// remove_menu_page( 'themes.php' );                 //Appearance
-			// remove_menu_page( 'plugins.php' );                //Plugins
-			// remove_menu_page( 'users.php' );                  //Users
-			remove_menu_page( 'tools.php' );                  //Tools
-			// remove_menu_page( 'options-general.php' );        //Settings
-
+			remove_menu_page( 'index.php' ); //Dashboard
+			// Additional menu pages to remove
+			remove_menu_page( 'edit.php' );  //Posts
+			remove_menu_page( 'tools.php' ); //Tools
 			remove_menu_page( 'site-global-settings' );
-		endif;
-
-	endforeach;
+		}
+	}
 }
-add_action( 'admin_init', 'dmc_remove_menus' );
+
+// Hook into 'admin_menu' instead of 'admin_init'
+add_action( 'admin_menu', 'dmc_remove_admin_menu_items' );
 
 
 // allow editors to manage gravity forms
